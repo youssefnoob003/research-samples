@@ -53,6 +53,49 @@ A sophisticated C2 malware that disguises itself as an innocent wallpaper cyclin
 
 ---
 
+### 2. CVE-2025-8061 BYOVD Exploit Chain
+
+**Category**: Kernel Exploitation / Privilege Escalation  
+**Techniques**: BYOVD, kASLR Defeat, SMEP/SMAP Bypass, Token Theft, DSE Bypass, DKOM  
+**Language**: C++, MASM  
+**Complexity**: High
+
+#### Overview
+A complete kernel exploitation chain targeting Windows 11 24H2 via CVE-2025-8061, a vulnerability in Lenovo's MSR I/O driver (`LnvMSRIO.sys`). The driver exposes physical memory and MSR read/write primitives to any unprivileged usermode process without authentication. Demonstrates the full BYOVD (Bring Your Own Vulnerable Driver) attack pattern.
+
+#### Key Techniques Demonstrated
+- **kASLR Defeat**: Kernel base leaked via LSTAR MSR read
+- **SMEP/SMAP Bypass**: ROP chain clears CR4 bits before shellcode execution
+- **Token Theft**: Ring 0 shellcode walks ActiveProcessLinks to steal System token
+- **DSE Bypass**: Dynamic g_CiOptions patching via signature scanning
+- **DKOM Rootkit**: Process hiding by unlinking from kernel process list
+
+#### MITRE ATT&CK Mapping
+- T1068 - Exploitation for Privilege Escalation
+- T1014 - Rootkit
+- T1211 - Exploitation for Defense Evasion
+- T1553.006 - Code Signing Policy Modification
+- T1569.002 - Service Execution
+
+#### Components
+- `phyread.cpp` / `phywrite.cpp` - Physical memory read/write primitives
+- `readmsr.cpp` / `writemsr.cpp` - MSR read/write + kASLR defeat
+- `privescshell.cpp` - Token theft exploit for SYSTEM shell
+- `fulldsechain.cpp` - Complete chain: token theft + DSE bypass + driver load
+- `PrepareStack.asm` - MASM stub for syscall hijack
+- `rootkit.cpp` - DKOM kernel driver for process hiding
+
+#### Educational Value
+- Understanding BYOVD attack patterns with signed vulnerable drivers
+- Learning kASLR, SMEP, SMAP, and DSE bypass mechanics
+- Kernel shellcode development and ROP techniques
+- Windows process model and DKOM fundamentals
+- Why HVCI/VBS is critical for modern Windows security
+
+**[→ View Full Documentation](CVE-2025-8061/README.md)**
+
+---
+
 ## Adding New Samples
 
 When contributing new malware samples, please ensure:
@@ -62,16 +105,6 @@ When contributing new malware samples, please ensure:
 3. **MITRE ATT&CK Mapping**: Map techniques to the ATT&CK framework
 4. **Detection Signatures**: Include indicators for defensive purposes
 5. **Ethical Guidelines**: Add appropriate disclaimers and usage warnings
-
----
-
-## Learning Path
-
-For those new to malware analysis, we recommend studying samples in this order:
-
-1. **Wallpaper C2** - Comprehensive example covering multiple techniques
-
-*(More samples will be added as the repository grows)*
 
 ---
 

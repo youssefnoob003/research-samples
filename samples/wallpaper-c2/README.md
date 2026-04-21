@@ -10,6 +10,8 @@ This malware sample is provided for educational and research purposes only. Unau
 
 A sophisticated Command & Control (C2) malware that masquerades as a wallpaper cycling application while maintaining covert communication with a remote server. The malware demonstrates advanced techniques including steganography, reflective DLL loading, and multi-stage payload delivery.
 
+![](demo4.mp4)
+
 ### High-Level Architecture
 
 ```

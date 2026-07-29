@@ -12,9 +12,9 @@ Before proceeding, ensure you have read and understood the [main repository disc
 
 ### 1. Wallpaper C2 Malware
 
-**Category**: Command & Control (C2) Infrastructure  
-**Techniques**: Steganography, Reflective DLL Loading, HTTP C2, XOR Obfuscation  
-**Language**: C, Python  
+**Category**: Command & Control (C2) Infrastructure
+**Techniques**: Steganography, Reflective DLL Loading, HTTP C2, XOR Obfuscation
+**Language**: C, Python
 **Complexity**: Medium
 
 #### Overview
@@ -55,9 +55,9 @@ A sophisticated C2 malware that disguises itself as an innocent wallpaper cyclin
 
 ### 2. CVE-2025-8061 BYOVD Exploit Chain
 
-**Category**: Kernel Exploitation / Privilege Escalation  
-**Techniques**: BYOVD, kASLR Defeat, SMEP/SMAP Bypass, Token Theft, DSE Bypass, DKOM  
-**Language**: C++, MASM  
+**Category**: Kernel Exploitation / Privilege Escalation
+**Techniques**: BYOVD, kASLR Defeat, SMEP/SMAP Bypass, Token Theft, DSE Bypass, DKOM
+**Language**: C++, MASM
 **Complexity**: High
 
 #### Overview
@@ -93,6 +93,44 @@ A complete kernel exploitation chain targeting Windows 11 24H2 via CVE-2025-8061
 - Why HVCI/VBS is critical for modern Windows security
 
 **[→ View Full Documentation](CVE-2025-8061/README.md)**
+
+---
+
+### 3. HackSys Extreme Vulnerable Driver (HEVD) Exploits
+
+**Category**: Kernel Exploitation / Privilege Escalation
+**Techniques**: Stack Buffer Overflow, Arbitrary Write, Heap Grooming, Arbitrary Read, Token Theft, ROP, DKOM
+**Language**: C
+**Complexity**: Medium-High
+
+#### Overview
+A progression of kernel-mode exploitation techniques targeting the HackSys Extreme Vulnerable Driver (HEVD). This project covers vulnerabilities ranging from basic Stack Buffer Overflows to advanced Arbitrary Write and Data-Only attacks using Heap Grooming. It demonstrates modern mitigations bypasses like SMEP and context reconstruction in Windows environments.
+
+#### Key Techniques Demonstrated
+- **Stack Buffer Overflow**: Overwriting return addresses to execute kernel ROP chains.
+- **Arbitrary Write (Write-What-Where)**: Hijacking control flow via `HalDispatchTable` and pivoting to a 32-bit mapped fake stack.
+- **Heap Grooming**: Deterministic exploitation of a Non-Paged Pool Out-of-Bounds read using Named Pipes spraying and hole punching.
+- **Arbitrary Read**: Corrupting kernel pool headers to convert an Out-of-Bounds read into a reliable Arbitrary Read primitive.
+- **SMEP Bypass & Restoration**: Disabling and restoring CR4 hardware protections via ROP.
+- **Data-Only Attacks**: Escalating privileges through DKOM (Token Theft) without hijacking the instruction pointer.
+
+#### MITRE ATT&CK Mapping
+- T1068 - Exploitation for Privilege Escalation
+- T1211 - Exploitation for Defense Evasion
+- T1012 - Query Registry (Simulated via NtQueryIntervalProfile)
+
+#### Components
+- `exp.c` - Exploit for the Stack Buffer Overflow.
+- `arb.c` - Exploit for the Arbitrary Write (Write-What-Where) vulnerability.
+- `dataonly.c` - Exploit demonstrating Heap Grooming to achieve Data-Only privilege escalation.
+
+#### Educational Value
+- Understanding foundational and advanced kernel exploitation methodologies.
+- Learning to bypass hardware mitigations (SMEP) using Return-Oriented Programming in kernel space.
+- Analyzing kernel memory management and executing heap grooming strategies.
+- Understanding Data-Only attacks and Direct Kernel Object Manipulation (DKOM).
+
+**[→ View Full Documentation](HVED/README.md)**
 
 ---
 

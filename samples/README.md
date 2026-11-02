@@ -134,6 +134,43 @@ A progression of kernel-mode exploitation techniques targeting the HackSys Extre
 
 ---
 
+### 4. CVE-2026-5476 cFS TBL Integer-Overflow RCE
+
+**Category**: Application RCE / Spacecraft Flight-Software Research
+**Techniques**: Crafted Table Images, 32-bit Integer Wraparound, Function-Pointer Hijacking, ASLR Address Resolution
+**Language**: Python
+**Complexity**: High
+
+#### Overview
+A contained proof of concept for a cFS Table Services integer-overflow vulnerability. The sample includes two 32-bit cFS target images, a UDP exploit driver, and a disposable Fedora container for repeatable lab execution. The supplied `draco` and `v7` images exercise different table-validation paths; the version-specific behavior is documented with the artifacts rather than generalized to every cFS release.
+
+#### Key Techniques Demonstrated
+- **Malformed Table Construction**: Builds a table image whose 32-bit offset/length arithmetic wraps during processing.
+- **Validation-Path Control Flow**: Places a resolved `system()` address in the crafted table’s validation function pointer.
+- **ASLR Resolution**: Uses the included `draco` MM path or the local-only helper service to resolve the target process’s libc address.
+- **Protocol Triggering**: Drives table load, validation, and housekeeping over cFS command packets.
+- **Containerized Reproduction**: Runs the supplied 32-bit targets in an isolated container with the required message-queue setup.
+
+#### MITRE ATT&CK Mapping
+- T1203 - Exploitation for Client Execution
+- T1059.004 - Command and Scripting Interpreter: Unix Shell
+
+#### Components
+- `cfs.py` - Version-aware PoC driver and crafted table generator.
+- `container/` - Fedora runtime image, target launcher, and local address-resolution helper.
+- `bin/draco/` and `bin/v7/` - Supplied 32-bit cFS research targets and table/application artifacts.
+- `MALWARE_DOCUMENTATION.md` - Vulnerability behavior, lab boundaries, detection, and mitigations.
+
+#### Educational Value
+- Understanding how unchecked 32-bit arithmetic can turn a table-loading primitive into control-flow corruption.
+- Comparing version-specific validation behavior without deploying against a live spacecraft system.
+- Learning how ASLR and process-specific symbol resolution affect reproducible exploit research.
+- Developing network, process, and file-based detections for malicious table submissions.
+
+**[→ View Full Documentation](CVE-2026-5476/README.md)**
+
+---
+
 ## Adding New Samples
 
 When contributing new malware samples, please ensure:
